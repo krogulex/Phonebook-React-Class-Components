@@ -1,8 +1,7 @@
 import { Component } from 'react';
-import { ContactForm } from './ContactForm';
-import { ContactList } from './ContactList';
-import { Filter } from './Filter';
-
+import { ContactForm } from './ContactForm/ContactForm';
+import { ContactList } from './ContactList/ContactList';
+import { Filter } from './Filter/Filter';
 export class App extends Component {
   state = {
     contacts: [
@@ -17,8 +16,6 @@ export class App extends Component {
   handleFilterChange = event => {
     const filter = event.target.value;
 
-    console.log(filter);
-
     this.setState({
       filter: filter,
     });
@@ -30,8 +27,31 @@ export class App extends Component {
     }));
   };
 
+  componentDidMount() {
+    const dataLocalStorage = JSON.parse(localStorage.getItem('contacts'));
+
+    if (dataLocalStorage) {
+      this.setState({
+        contacts: dataLocalStorage
+        }
+    );
+    }
+  }
+/* Rowniez dziala bez prevState
+  componentDidUpdate() {
+    const thisStateStringified = JSON.stringify(this.state.contacts);
+    localStorage.setItem('contacts', thisStateStringified);
+    console.log(thisStateStringified)
+  } */
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.contacts !== prevState.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+
   render() {
-    console.log(this.state);
+
     return (
       <div className="content-box">
         <h1>Phonebook</h1>
@@ -47,7 +67,7 @@ export class App extends Component {
             }
 
             this.state.contacts.push(values);
-            this.setState(this.state);
+            this.setState(this.state.contacts);
           }}
         />
 
