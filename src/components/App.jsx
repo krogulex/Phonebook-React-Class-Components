@@ -2,6 +2,7 @@ import { Component } from 'react';
 import { ContactForm } from './ContactForm/ContactForm';
 import { ContactList } from './ContactList/ContactList';
 import { Filter } from './Filter/Filter';
+
 export class App extends Component {
   state = {
     contacts: [
@@ -29,6 +30,7 @@ export class App extends Component {
 
   componentDidMount() {
     const dataLocalStorage = JSON.parse(localStorage.getItem('contacts'));
+    console.log(dataLocalStorage)
 
     if (dataLocalStorage) {
       this.setState({
@@ -37,18 +39,19 @@ export class App extends Component {
     );
     }
   }
-/* Rowniez dziala bez prevState
   componentDidUpdate() {
     const thisStateStringified = JSON.stringify(this.state.contacts);
     localStorage.setItem('contacts', thisStateStringified);
     console.log(thisStateStringified)
-  } */
+  }
 
-  componentDidUpdate(prevProps, prevState) {
+/*   componentDidUpdate(prevProps, prevState) {
+    console.log(prevState.contacts)
     if (this.state.contacts !== prevState.contacts) {
+      console.log(this.state)
       localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
     }
-  }
+  } */
 
   render() {
 
